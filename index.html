@@ -1,101 +1,57 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-    <title>ArcGIS API for JavaScript的研究与应用</title>
-    <!-- 添加css底层渲染 -->
-    <link rel="stylesheet" href="https://js.arcgis.com/3.35/esri/themes/calcite/dijit/calcite.css">
-    <link rel="stylesheet" href="https://js.arcgis.com/3.35/esri/themes/calcite/esri/esri.css">
-    <!-- 添加控件预设位置 -->
-    <style>
-      html, body, #map {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Intro to SceneView - Create a 3D map - 4.7</title>
+<style>
+    html,
+    body,
+    #viewDiv {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    }
+</style>
 
-      .bookmark-container {
-        position: absolute;
-        top: 180px;
-        left: 15px;
-        padding: 1rem;
-        background: #ffffff;
-        border-radius: 4px;
-        border: 1px solid #eeeeee;
-      }
+<link rel="stylesheet" href="https://js.arcgis.com/4.7/esri/css/main.css">
+<script src="https://js.arcgis.com/4.7/"></script>
 
-      #search {
-        display: block;
-        position: absolute;
-        z-index: 2;
-        top: 40px;
-        left: 74px;
-      }
+<script>
+    require([
+    "esri/Map",
+    "esri/views/SceneView",
+    "esri/widgets/Search",
+    "dojo/domReady!",
+    ], function(Map, SceneView,Search) {
 
-      #HomeButton {
-        position: absolute;
-        top: 105px;
-        left: 15px;
-        z-index: 50;
-      }
+    var map = new Map({
+        basemap: "osm",
+        ground: "world-elevation"
+    });
 
-      #LocateButton {
-        position: absolute;
-        top: 140px;
-        left: 15px;
-        z-index: 50;
-      }
+    var view = new SceneView({
+        container: "viewDiv",
+        map: map,
+        scale: 50000000,
+        center: [114.3996484, 30.52428033]
+    });
 
-      #BasemapToggle {
-        position: absolute;
-        top: 40px;
-        right: 10px;
-        z-index: 50;
-      }
+    var searchWidget = new Search({
+        view: view
+    });
 
-      #titlePane{ 
-        width:290px;
-        background-color: white;
-      }
-    </style>
-    <!-- 调用ArcGIS 3.35 -->
-    <script src="https://js.arcgis.com/3.35/"></script>
-    <!-- 调用功能实现脚本 -->
-    <script src="BaseFunctions.js"></script>
-  </head>
+    view.ui.add(searchWidget,{
+        position:"top-right",
+        index: 0
+    });
 
+    });
+</script>
+</head>
 
-  <body class="calcite">
-    <style>
-      body{
-          background-color: blanchedalmond;
-      }
-    </style>
-    <div id="search"></div>
-    <div id="map"
-          data-dojo-type="dijit/layout/ContentPane" 
-          data-dojo-props="region:'center'" 
-          style="padding:0">
-      <div style="position:absolute; right:95px; top:41px; z-Index:999;">
-        <div id="titlePane" data-dojo-type="dijit/TitlePane" data-dojo-props="title:'Measurement', closable:false">
-          <div id="measurementDiv"></div>
-          <span style="font-size:smaller;padding:5px 5px;">Press <b>CTRL</b> to enable snapping.</span>
-        </div>
-      </div>
-      <div id="HomeButton"></div>
-      <div id="LocateButton"></div>
-      <div id="BasemapToggle"></div>
-      <!-- 设置Dom按钮与Dom触发函数 -->
-      <button onclick="toEarth()">三维视图</button>
-      <button onclick="toDataPage()">难民信息</button>
-      <button onclick='toPay()'>在线打赏</button>
-      <button onclick="downInfo()">作者简历</button>
-      <script src="domFunctions.js"></script>
-    </div>
-    <div class="bookmark-container">
-      <div id="bookmarks"></div>
-    </div>
-  </body>
+<body>
+    <div id="viewDiv"></div>
+</body>
 </html>
-
